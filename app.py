@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonfy
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -18,11 +18,11 @@ def add_weather():
 
     #veri dogrulama
     if not new_city or not new_weather:
-        return jsonfy({"error": "sehir ve hava durumu bilgisi gerekli!"}), 400
+        return jsonify({"error": "sehir ve hava durumu bilgisi gerekli!"}), 400
 
     #yeni veriyi tabloya ekle
     weather_data.append({"city": new_city, "weather": new_weather})
-    return jsonfy({"message": "veri basariyla tabloya eklendi!"}), 200
+    return jsonify({"message": "veri basariyla tabloya eklendi!"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
