@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu Tablosu</title>
+    <style>
+        table {
+            width: 50%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .empty {
+            text-align: center;
+            color: gray;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Hava Durumu Tablosu</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Şehir</th>
+                <th>Hava Durumu</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if weather_data %}
+                {% for item in weather_data %}
+                <tr>
+                    <td>{{ item.city }}</td>
+                    <td>{{ item.weather }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="2" class="empty">Tablo şu anda boş</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>
