@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+    <h1 style="text-align: center;">Hoş Geldiniz!</h1> <!-- Bu satırı ekleyin -->
     <h1 style="text-align: center;">Hava Durumu Tablosu</h1>
     <table>
         <thead>
@@ -37,10 +38,10 @@
         <tbody>
             {% if weather_data %}
                 {% for item in weather_data %}
-                <tr>
-                    <td>{{ item.city }}</td>
-                    <td>{{ item.weather }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ item.city }}</td>
+                        <td>{{ item.weather }}</td>
+                    </tr>
                 {% endfor %}
             {% else %}
                 <tr>
