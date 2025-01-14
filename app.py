@@ -24,6 +24,11 @@ def add_weather():
         if item["city"].lower() == new_city.lower():
             return jsonify({"error" : f"{new_city} zaten tabloya eklenmis!"}), 400
 
+    for item in weather_data:
+        if item ["city"].lower() == new_city.lover():
+            item["weather"] = new_weather
+            return jsonify({"message": f"{new_city} icin hava durumu guncellenmistir!"}), 200
+            
     #yeni veriyi tabloya ekle
     weather_data.append({"city": new_city, "weather": new_weather})
     return jsonify({"message": "veri basariyla tabloya eklendi!"}), 200
