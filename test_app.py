@@ -11,12 +11,12 @@ def test_add_weather():
     client = app.app.test_client()
 
     #tabloya veri ekle
-    response = client.post("/add", json={"city": "Eindhoven", "weather": "23 derece"})
+    response = client.post("/add", json={"city": "Eindhoven", "weather": "23"})
+    #tablonun baslangicta bos oldugunu dogrula
     assert response.status_code == 200
-    assert b"veri basariyla tabloya eklendi!" in response.data  #tablonun baslangicta bos oldugunu dogrula
+    assert b"veri basariyla tabloya eklendi!" in response.data
 
-    #tabloyu kontrol et
-    response = client.get("/")
-    assert response.status_code == 200
-    assert b"Eindhoven" in response.data
-    assert b"23 derece" in response.data
+    response = client.post("/add", json={"city": "Eindhoven", "weather": "25"})
+    #tabloya zaten eklenmis oldugunu dogrula
+    assert response.status_code == 400
+    assert b"Eindhoven zaten tabloya eklenmis!" in response.data
