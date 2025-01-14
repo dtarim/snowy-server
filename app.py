@@ -30,4 +30,4 @@ def add_weather():
     return jsonify({"message": "veri basariyla tabloya eklendi!"}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, host='192.168.178.86')
+    app.run(debug=True, host='192.168.178.155')
