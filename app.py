@@ -20,12 +20,8 @@ def add_weather():
     if not new_city or not new_weather:
         return jsonify({"error": "sehir ve hava durumu bilgisi gerekli!"}), 400
 
-    # for item in weather_data:
-    #     if item["city"].lower() == new_city.lower():
-    #         return jsonify({"error" : f"{new_city} zaten tabloya eklenmis!"}), 400
-
     for item in weather_data:
-        if item ["city"].lower() == new_city.lover():
+        if item ["city"].lower() == new_city.lower():
             item["weather"] = new_weather
             return jsonify({"message": f"{new_city} icin hava durumu guncellenmistir!"}), 200
 
@@ -34,4 +30,4 @@ def add_weather():
     return jsonify({"message": "veri basariyla tabloya eklendi!"}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.178.86')
