@@ -1,22 +1,23 @@
 import app
 
 def test_home():
-    # test client oluştur
+    # Test client oluştur
     client = app.app.test_client()
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Hos Geldiniz!" in response.data
+    assert "Hos Geldiniz!" in response.get_data(as_text=True)  # UTF-8 uyumlu hale getirildi
 
 def test_add_weather():
     client = app.app.test_client()
 
-    #tabloya veri ekle
+    # Tabloya yeni veri ekleme
     response = client.post("/add", json={"city": "Eindhoven", "weather": "23"})
-    #tablonun baslangicta bos oldugunu dogrula
     assert response.status_code == 200
-    assert b"veri basariyla tabloya eklendi!" in response.data
+    response_data = response.get_json()  # JSON yanıtını parse et
+    assert response_data["message"] == "Veri başarıyla tabloya eklendi!"  # Güncellendi
 
+    # Aynı şehri tekrar eklediğimizde güncellenmeli ve 200 dönmeli
     response = client.post("/add", json={"city": "Eindhoven", "weather": "25"})
-    #tabloya zaten eklenmis oldugunu dogrula
-    assert response.status_code == 400
-    assert b"Eindhoven zaten tabloya eklenmis!" in response.data
+    assert response.status_code == 200  # Artık 400 beklemiyoruz, çünkü güncelleme oluyor!
+    response_data = response.get_json()  # JSON yanıtını parse et
+    assert response_data["message"] == "Eindhoven için hava durumu güncellendi!"  # Güncellendi
