@@ -47,7 +47,14 @@ jobs:
 
       - name: Extract Version (if release)
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+            if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+             VERSION="${GITHUB_REF#refs/tags/}"
+            else
+             VERSION="${GITHUB_REF#refs/heads/}"
+            fi
+            echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
 
       - name: Build Docker Image
         run: |
