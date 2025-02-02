@@ -3,12 +3,12 @@ name: Docker Build and Push
 on:
   pull_request:
     branches:
-      - master
+        - master
   push:
     branches:
         - master
     tags:
-      - 'v1'  # v1.0.0, v2.0.0 gibi tag'ler için çalıştır
+      - 'v2'  # v1.0.0, v2.0.0 gibi tag'ler için çalıştır
 
 jobs:
   test:
@@ -58,10 +58,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:${{ env.VERSION }} .
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy_server:${{ env.VERSION }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy_server:latest .
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/server:${{ env.VERSION }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/server:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/snowy_server:${{ env.VERSION }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/snowy_server:latest
