@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-server
+  template:
+    metadata:
+      labels:
+        app: weather-server
+    spec:
+      containers:
+      - name: weather-server
+        image: dtarim/weather-server:latest  # Docker Hub'daki en güncel server imajın
+        ports:
+        - containerPort: 5000
