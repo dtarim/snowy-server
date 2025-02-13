@@ -31,4 +31,4 @@ def add_weather():
     return jsonify({"message": "Veri başarıyla eklendi!"}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)  # Docker içinde çalışacağı için 0.0.0.0'ı dinliyoruz
+    app.run(host="0.0.0.0", port=15000)  # Docker içinde çalışacağı için 0.0.0.0'ı dinliyoruz

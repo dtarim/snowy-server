@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 6. Flask uygulamasının dinleyeceği portu açıyoruz (default 5000)
-EXPOSE 5000
+EXPOSE 15000
 
 # 7. Uygulamayı başlatıyoruz
 CMD ["python", "app.py"]
