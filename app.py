@@ -28,7 +28,7 @@ def add_weather():
 
     # Yeni şehir ekleme
     weather_data.append({"city": new_city, "weather": new_weather})
-    return jsonify({"message": "Veri başarıyla eklendi!"}), 200
+    return jsonify({"message": "Veri başarıyla tabloya eklendi!"}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=15000)  # Docker içinde çalışacağı için 0.0.0.0'ı dinliyoruz
