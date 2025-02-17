@@ -70,28 +70,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    release:
-      name: Create GitHub Release
-      runs-on: ubuntu-latest
-      needs: build-and-push
-      if: success()  # Eğer tüm job'lar başarılı olduysa release job'unu çalıştır
-      steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v3
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: success()  # Eğer tüm job'lar başarılı olduysa release job'unu çalıştır
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-<<<<<<< HEAD
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.VERSION }}
-          name: Release ${{ env.VERSION }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          #deneme3
-=======
         - name: Create GitHub Release
           uses: softprops/action-gh-release@v1
           with:
@@ -101,4 +88,3 @@ jobs:
             prerelease: false
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
->>>>>>> development
