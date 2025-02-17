@@ -79,12 +79,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-        - name: Create GitHub Release
-          uses: softprops/action-gh-release@v1
-          with:
-            tag_name: ${{ env.VERSION }}
-            name: Release ${{ env.VERSION }}
-            draft: false
-            prerelease: false
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
