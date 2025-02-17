@@ -41,12 +41,19 @@ jobs:
       - name: Extract Version
         id: get_version
         run: |
-          latest_tag=$(git describe --tags --abbrev=0 || echo "v1.0.0")
+          latest_tag=$(git tag --sort=-v:refname | head -n 1)
+          if [[ -z "$latest_tag" ]]; then
+            latest_tag="v1.0.0"
+          fi
+          
           IFS='.' read -r -a version_parts <<< "${latest_tag#v}"
           major="${version_parts[0]}"
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
-          new_version="v$major.$minor.$((patch + 1))"
+          
+          new_patch=$((patch + 1))
+          new_version="v$major.$minor.$new_patch"
+
           echo "VERSION=$new_version" >> $GITHUB_ENV
           echo "version=$new_version" >> $GITHUB_OUTPUT
 
@@ -64,6 +71,12 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          
+          # Eğer tag zaten varsa silip tekrar ekleyelim (hata önlemek için)
+          git tag -d ${{ env.VERSION }} || true
+          git push --delete origin ${{ env.VERSION }} || true
+
+          # Yeni tag oluştur ve push et
           git tag ${{ env.VERSION }}
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin ${{ env.VERSION }}
@@ -74,7 +87,7 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: success()  # Eğer tüm job'lar başarılı olduysa release job'unu çalıştır
+    if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -88,4 +101,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #denemedevamke
