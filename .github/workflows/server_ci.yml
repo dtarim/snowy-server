@@ -56,7 +56,7 @@ jobs:
           
           new_patch=$((patch + 1))
           new_version="v$major.$minor.$new_patch"
-
+          echo "VERSION=$new_version"
           echo "VERSION=$new_version" >> $GITHUB_ENV
           echo "version=$new_version" >> $GITHUB_OUTPUT
 
