@@ -1,12 +1,13 @@
 name: Docker Build and Push
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "v*"
-  workflow_dispatch:  # Manuel çalıştırma seçeneği
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+        type: string
 
 jobs:
   test:
@@ -31,8 +32,6 @@ jobs:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: test
-    outputs:  # Job çıktılarını tanımla
-      version: ${{ steps.get_version.outputs.version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -43,33 +42,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract Version
-        id: get_version  # Adımın ID'si
-        run: |
-          latest_tag=$(git tag --sort=-v:refname | head -n 1)
-          if [[ -z "$latest_tag" ]]; then
-            latest_tag="v1.0.0"
-          fi
-          
-          IFS='.' read -r -a version_parts <<< "${latest_tag#v}"
-          major="${version_parts[0]}"
-          minor="${version_parts[1]}"
-          patch="${version_parts[2]}"
-          
-          new_patch=$((patch + 1))
-          new_version="v$major.$minor.$new_patch"
-
-          echo "VERSION=$new_version" >> $GITHUB_ENV
-          echo "version=$new_version" >> $GITHUB_OUTPUT  # Output olarak ayarla
-
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:${{ env.VERSION }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:${{ github.event.inputs.tag }} .
           docker build -t ${{ secrets.DOCKER_USERNAME }}/server:latest .
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/server:${{ env.VERSION }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/server:${{ github.event.inputs.tag }}
           docker push ${{ secrets.DOCKER_USERNAME }}/server:latest
 
       - name: Create and Push Tag
@@ -78,13 +58,13 @@ jobs:
           git config --global user.email "actions@github.com"
           
           # Eğer tag zaten varsa silip tekrar ekleyelim (hata önlemek için)
-          git tag -d ${{ env.VERSION }} || true
-          git push --delete origin ${{ env.VERSION }} || true
+          git tag -d ${{ github.event.inputs.tag }} || true
+          git push --delete origin ${{ github.event.inputs.tag }} || true
 
           # Yeni tag oluştur ve push et
-          git tag ${{ env.VERSION }}
+          git tag ${{ github.event.inputs.tag }}
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin ${{ env.VERSION }}
+          git push origin ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -92,7 +72,6 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: startsWith(github.ref, 'refs/tags/')  # Yalnızca tag oluşturulduğunda çalışır
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -100,8 +79,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.build-and-push.outputs.version }}  # Job output'u kullan
-          name: Release ${{ needs.build-and-push.outputs.version }}  # Job output'u kullan
+          tag_name: ${{ github.event.inputs.tag }}  # Kullanıcının girdiği tag'i kullan
+          name: Release ${{ github.event.inputs.tag }}  # Kullanıcının girdiği tag'i kullan
           draft: false
           prerelease: false
         env:
