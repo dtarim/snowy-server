@@ -3,22 +3,26 @@ name: Create GitHub Release
 on:
   push:
     tags:
-      - 'v*'  # Sadece tag push edildiğinde çalışacak
+      - 'v*'  # Sadece v ile başlayan tag'ler push edildiğinde çalışacak
 
 jobs:
   release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
+      # 1. Adım: Repository'yi checkout et
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # 2. Adım: GitHub Release oluştur
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik olarak sağlanan tag adı
-          name: Release ${{ github.ref_name }}
-          draft: true
-          prerelease: false
+          tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
+          name: Release ${{ github.ref_name }}  # Release adı
+          body: "Bu release, ${{ github.ref_name }} sürümünü içerir."  # Release açıklaması
+          draft: false  # Release'i draft olarak oluşturma
+          prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
+          generate_release_notes: true  # Otomatik release notları oluştur
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub tarafından otomatik sağlanan token
