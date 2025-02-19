@@ -40,7 +40,7 @@ jobs:
       - name: DENEMEEE
         id: deneme
         run: |
-          echo "release body ${{github.RELEASE_BODY}}"
+          echo "release body ${{env.RELEASE_BODY}}"
 
       # 3. Adım: GitHub Release oluştur
       - name: Create GitHub Release
@@ -48,7 +48,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
           name: Release ${{ github.ref_name }}  # Release adı
-          body: ${{github.RELEASE_BODY}}  # Şablon dosyasından okunan açıklama
+          body: ${{env.RELEASE_BODY}}  # Şablon dosyasından okunan açıklama
           draft: false  # Release'i draft olarak oluşturma
           prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
         env:
