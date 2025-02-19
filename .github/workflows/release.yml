@@ -16,7 +16,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik olarak sağlanan tag adı
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
