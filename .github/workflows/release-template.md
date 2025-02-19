@@ -6,8 +6,8 @@
 - Performans iyileştirmeleri yapıldı.
 
 ### Katkıda Bulunanlar
-- @kullanici1
-- @kullanici2
+- @dtarim
+- @gtarim
 
 ### Detaylar
 Bu sürüm, projenin stabilitesini artırmak için birçok iyileştirme içerir.
