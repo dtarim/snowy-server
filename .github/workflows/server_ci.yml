@@ -59,13 +59,13 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy-server:${{ env.VERSION }} .
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy-server:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy_server:${{ env.VERSION }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/snowy_server:latest .
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/snowy-server:${{ env.VERSION }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/snowy-server:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/snowy_server:${{ env.VERSION }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/snowy_server:latest
 
       - name: Create and Push Tag
         run: |
