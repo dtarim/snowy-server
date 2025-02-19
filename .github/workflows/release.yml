@@ -14,15 +14,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 2. Adım: GitHub Release oluştur
+      # 2. Adım: Şablon dosyasını oku ve tag adını ekle
+      - name: Prepare Release Body
+        id: prepare_release_body
+        run: |
+          RELEASE_BODY=$(sed "s/\$TAG_NAME/${{ github.ref_name }}/g" .github/release-template.md)
+          echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_BODY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      # 3. Adım: GitHub Release oluştur
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
           name: Release ${{ github.ref_name }}  # Release adı
-          body: "Bu release, ${{ github.ref_name }} sürümünü içerir."  # Release açıklaması
-         # draft: false  # Release'i draft olarak oluşturma
+          body: ${{ env.RELEASE_BODY }}  # Şablon dosyasından okunan açıklama
+          draft: false  # Release'i draft olarak oluşturma
           prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
-          generate_release_notes: true  # Otomatik release notları oluştur
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub tarafından otomatik sağlanan token
