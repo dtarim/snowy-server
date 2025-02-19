@@ -16,7 +16,7 @@ jobs:
       - name: Prepare Release Body
         id: prepare_release_body
         run: |
-            RELEASE_BODYY="## 🚀 Yeni Sürüm: v1.0.1
+            BODY="## 🚀 Yeni Sürüm: v1.0.1
             ### Değişiklikler
             - Yeni özellikler eklendi.
             - Hata düzeltmeleri yapıldı.
@@ -30,7 +30,7 @@ jobs:
             Bu sürüm, projenin stabilitesini artırmak için birçok iyileştirme içerir."
 
             # TAG_NAME değişkenini içeriğe ekleme
-            RELEASE_BODY=$(echo "$RELEASE_BODYY" | sed "s/\$TAG_NAME/${{ github.ref_name }}/g")
+            RELEASE_BODY=$(echo "$BODY" | sed "s/\$TAG_NAME/${{ github.ref_name }}/g")
 
             # RELEASE_BODY'yi ortam değişkeni olarak ayarlama
             echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
@@ -40,7 +40,7 @@ jobs:
       - name: DENEMEEE
         id: deneme
         run: |
-          echo "release body" | echo $RELEASE_BODY
+          echo "release body ${{github.RELEASE_BODY}}"
 
       # 3. Adım: GitHub Release oluştur
       - name: Create GitHub Release
@@ -48,7 +48,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
           name: Release ${{ github.ref_name }}  # Release adı
-          body: "kajsdkjaskdjaksjdaksjd"  # Şablon dosyasından okunan açıklama
+          body: ${{github.RELEASE_BODY}}  # Şablon dosyasından okunan açıklama
           draft: false  # Release'i draft olarak oluşturma
           prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
         env:
