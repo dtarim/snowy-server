@@ -21,7 +21,7 @@ jobs:
           tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
           name: Release ${{ github.ref_name }}  # Release adı
           body: "Bu release, ${{ github.ref_name }} sürümünü içerir."  # Release açıklaması
-          draft: false  # Release'i draft olarak oluşturma
+         # draft: false  # Release'i draft olarak oluşturma
           prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
           generate_release_notes: true  # Otomatik release notları oluştur
         env:
