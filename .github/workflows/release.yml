@@ -23,13 +23,18 @@ jobs:
           echo "$RELEASE_BODY" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
+      - name: DENEMEEE
+        id: deneme
+        run: |
+          echo "release body" | echo $RELEASE_BODY
+
       # 3. Adım: GitHub Release oluştur
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}  # GitHub tarafından otomatik sağlanan tag adı
           name: Release ${{ github.ref_name }}  # Release adı
-          body: ${{ env.RELEASE_BODY }}  # Şablon dosyasından okunan açıklama
+          body: "kajsdkjaskdjaksjdaksjd"  # Şablon dosyasından okunan açıklama
           draft: false  # Release'i draft olarak oluşturma
           prerelease: false  # Release'i ön sürüm (pre-release) olarak işaretleme
         env:
